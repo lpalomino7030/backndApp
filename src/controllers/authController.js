@@ -32,11 +32,16 @@ const login = async (req, res) => {
     const match = await bcrypt.compare(password, user.password_hash);
     if (!match) return res.status(401).json({ error: 'Credenciales inválidas' });
 
-    const token = jwt.sign(
-      { id: user.id_usuario, rol: user.id_rol },
-      process.env.JWT_SECRET,
-      { expiresIn: '8h' }
-    );
+const token = jwt.sign(
+  {
+    id: user.id_usuario,
+    rol: user.id_rol,
+    nombres: user.nombres,
+    apellidos: user.apellidos
+  },
+  process.env.JWT_SECRET,
+  { expiresIn: '8h' }
+);
 
     res.json({ token });
 
