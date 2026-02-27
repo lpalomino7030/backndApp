@@ -20,7 +20,7 @@ const getTickets = async (req, res) => {
 
 const getTicketById = async (req, res) => {
   try {
-    const ticket = await ticketModel.getTicketById(req.params.id, req.user.id, req.user.rol);
+    const ticket = await ticketModel.getTicketById(req.params.id);
     if (!ticket) return res.status(404).json({ error: 'Ticket no encontrado' });
     res.json(ticket);
   } catch (error) {

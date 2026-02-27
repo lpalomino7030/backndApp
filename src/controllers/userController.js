@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const userModel = require('../models/userModel');
 
 const getProfile = async (req, res) => {
   try {
@@ -15,4 +16,14 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = { getProfile };
+const getUsers = async (req, res) => {
+  try {
+    const usersActive = await userModel.findUsers();
+    res.json(usersActive);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener usuarios" });
+  }
+ }
+
+module.exports = { getProfile, getUsers };

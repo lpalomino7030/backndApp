@@ -56,18 +56,16 @@ const getTickets = async () => {
   }
 };
 
-const getTicketById = async (ticketId, userId, userRole) => {
-  let query = `SELECT t.*, u.nombres AS creador, e.nombre AS estado
-                FROM ticket t
-                JOIN usuario u ON t.id_usuario_creador = u.id
-                JOIN estado e ON t.id_estado = e.id
-                WHERE t.id = ?`;
+const getTicketById = async (ticketId) => {
+  let query = `SELECT tk.id_ticket, tk.codigo, tk.titulo, tk.descripcion, tk.id_usuario_creador,tk.id_usuario_asignado, st.nombre as estado, tk.prioridad, tk.fecha_creacion FROM ticket tk INNER JOIN estado_ticket st ON tk.id_estado = st.id_estado
+                WHERE tk.id_ticket = ?;`;
   const params = [ticketId];
 
-  if (userRole === "Usuario") {
-    query += ` AND t.id_usuario_creador = ?`;
-    params.push(userId);
-  }
+  // if (userRole === "Usuario") {
+  //   query += ` AND t.id_usuario_creador = ?`;
+  //   params.push(userId);
+  // }
+
   const connection = await pool.getConnection();
   try {
     const [rows] = await connection.query(query, params);
