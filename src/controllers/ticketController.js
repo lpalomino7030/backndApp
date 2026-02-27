@@ -30,8 +30,11 @@ const getTicketById = async (req, res) => {
 
 const updateTicket = async (req, res) => {
   try {
-    const updated = await ticketModel.updateTicket(req.params.id, req.body, req.user.id, req.user.rol);
-    if (!updated) return res.status(404).json({ error: 'Ticket no encontrado o sin permiso' });
+    const updated = await ticketModel.updateTicket(req.params.id, req.body);
+
+    if (!updated)
+      return res.status(404).json({ error: 'Ticket no encontrado o sin permiso' });
+
     res.json({ message: 'Ticket actualizado' });
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar ticket' });
@@ -48,4 +51,13 @@ const deleteTicket = async (req, res) => {
   }
 };
 
-module.exports = { createTicket, getTickets, getTicketById, updateTicket, deleteTicket };
+const getTicketEstados = async (req, res) => {
+  try {
+    const estados = await ticketModel.getTicketEstados();
+    res.json(estados);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener estados de ticket' });
+  }
+};
+
+module.exports = { createTicket, getTickets, getTicketById, updateTicket, deleteTicket, getTicketEstados };
